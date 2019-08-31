@@ -1,6 +1,14 @@
 use Mix.Config
 
 # Configure your database
+config :auth, Auth.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "auth_test",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
+
+# Configure your database
 config :banking, Banking.Repo,
   username: "postgres",
   password: "postgres",

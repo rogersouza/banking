@@ -7,7 +7,11 @@
 # all use the same configuration file. If you want different
 # configurations or dependencies per app, it is best to
 # move said applications out of the umbrella.
-use Mix.Config
+import Config
+
+# Configure Mix tasks and generators
+config :auth,
+  ecto_repos: [Auth.Repo]
 
 # Configure Mix tasks and generators
 config :banking,
@@ -31,6 +35,12 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :comeonin, :bcrypt_log_rounds, 4
+
+config :auth, Auth.Guardian,
+  issuer: "auth",
+  secret_key: "Wbt2v7c7NEAKZ2PPHkzFJdX8HTi+JpOLE90Pvo2zFSlTe7ZmwV+j6IuAzP59Tp7A"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

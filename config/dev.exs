@@ -1,6 +1,15 @@
 use Mix.Config
 
 # Configure your database
+config :auth, Auth.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "auth_dev",
+  hostname: "localhost",
+  show_sensitive_data_on_connection_error: true,
+  pool_size: 10
+
+# Configure your database
 config :banking, Banking.Repo,
   username: "postgres",
   password: "postgres",
