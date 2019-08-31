@@ -1,5 +1,5 @@
 defmodule BankingWeb.Factory do
-  use ExMachina.Ecto, repo: Auth.Repo
+  use ExMachina
   
   def user_factory do
     %{

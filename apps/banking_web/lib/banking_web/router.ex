@@ -10,4 +10,10 @@ defmodule BankingWeb.Router do
 
     resources("/users", V1.UserController, only: [:create])
   end
+
+  scope "/api/v1", BankingWeb, as: :api_v1 do
+    pipe_through :api
+    
+    post("/auth-token", V1.AuthController, :authenticate)
+  end
 end
