@@ -43,7 +43,8 @@ defmodule BankingWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:banking, in_umbrella: true},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:ex_machina, "~> 2.3", only: :test}
     ]
   end
 
