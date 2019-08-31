@@ -1,4 +1,14 @@
 defmodule Auth.User do
+  @moduledoc """
+  An ecto schema containing the following fields
+
+  - Email (required and unique)
+  - Password (required)
+  - Name (required)
+
+  The password is hashed before the user is inserted
+  """
+
   use Ecto.Schema
 
   import Ecto.Changeset
