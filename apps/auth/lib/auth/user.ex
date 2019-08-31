@@ -9,7 +9,7 @@ defmodule Auth.User do
   The password is hashed before the user is inserted
   """
 
-  @derive {Jason.Encoder, only: [:email, :password, :name, :id]}
+  @derive {Jason.Encoder, only: [:email, :name, :id]}
 
   use Ecto.Schema
 

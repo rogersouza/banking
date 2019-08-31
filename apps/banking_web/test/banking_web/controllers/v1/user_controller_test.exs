@@ -35,5 +35,13 @@ defmodule BankingWeb.V1.UserControllerTest do
       conn = post(conn, @create_user_url, user)
       assert json_response(conn, 409)
     end
+
+    test "doesn't return the password", %{conn: conn} do
+      user = build(:user)
+      conn = post(conn, @create_user_url, user)
+      response = json_response(conn, 201)
+
+      refute Map.has_key?(response, "password"), message: "the password hash is private and should not be returned"
+    end
   end
 end
