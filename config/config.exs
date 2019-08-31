@@ -38,6 +38,10 @@ config :phoenix, :json_library, Jason
 
 config :comeonin, :bcrypt_log_rounds, 4
 
+config :auth, Auth.Guardian,
+  issuer: "auth",
+  secret_key: "Wbt2v7c7NEAKZ2PPHkzFJdX8HTi+JpOLE90Pvo2zFSlTe7ZmwV+j6IuAzP59Tp7A"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

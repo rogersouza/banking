@@ -32,6 +32,13 @@ defmodule Auth.User do
     |> hash_password()
   end
 
+  def credentials_changeset(user, params) do
+    user
+    |> cast(params, [:email, :password])
+    |> validate_required([:email, :password])
+    |> validate_format(:email, ~r/@/)
+  end
+
   defp hash_password(%{changes: %{password: password}} = changeset) do
     if changeset.valid? do
       put_change(changeset, :password, Encryption.put_hash(password))
