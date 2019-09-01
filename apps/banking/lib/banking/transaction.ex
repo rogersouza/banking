@@ -23,18 +23,4 @@ defmodule Banking.Transaction do
     |> cast(params, @fields)
     |> validate_required(@fields)
   end
-
-  def credits(user_id) do
-    from t in Transaction,
-      where:
-        t.user_id == ^user_id and
-          t.type == ^"credit"
-  end
-
-  def debits(user_id) do
-    from t in Transaction,
-      where:
-        t.user_id == ^user_id and
-          t.type == ^"credit"
-  end
 end
