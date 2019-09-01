@@ -21,5 +21,6 @@ defmodule BankingWeb.Router do
     pipe_through :authenticated
     
     get("/wallet", V1.WalletController, :show)
+    resources("/withdrawals", V1.WithdrawController, only: [:create])
   end
 end

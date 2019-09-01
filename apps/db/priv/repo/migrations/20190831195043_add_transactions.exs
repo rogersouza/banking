@@ -6,6 +6,9 @@ defmodule Db.Repo.Migrations.AddTransactions do
       add :user_id, references(:users), null: false
       add :amount, :integer, null: false
       add :type, :string, null: false
+      add :description, :string, null: false
+
+      timestamps()
     end
   end
 end
