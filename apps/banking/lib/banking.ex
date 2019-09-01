@@ -9,7 +9,7 @@ defmodule Banking do
   import Ecto.Query
 
   alias Db.Repo
-  alias Banking.Transaction
+  alias Banking.{Transaction, Withdraw}
 
   @type amount() :: String.t() | Money.t()
 
@@ -26,7 +26,7 @@ defmodule Banking do
   """
   @spec credit(integer(), amount()) :: {:ok, Transaction.t()} | {:error, Money.t()}
   def credit(user_id, amount) do
-    %Transaction{}
+    %Transaction{description: "initial_amount"}
     |> Transaction.changeset(%{amount: amount, user_id: user_id, type: "credit"})
     |> Repo.insert()
   end
@@ -50,5 +50,22 @@ defmodule Banking do
       {"debit", amount}, total -> Money.subtract(total, amount)
       _, total -> total
     end)
+  end
+
+  def withdraw(user_id, amount) do
+    attrs = %{amount: amount, user_id: user_id}
+    changeset = Withdraw.changeset(%Withdraw{}, attrs)
+
+    with %{valid?: true} <- changeset,
+         true <- has_sufficient_funds?(user_id, changeset) do
+      Repo.insert(changeset)
+    else
+      %{valid?: false} -> {:error, changeset}
+      false -> {:error, :insufficient_funds}
+    end
+  end
+
+  defp has_sufficient_funds?(user_id, %{changes: %{amount: amount}}) do
+    Banking.balance(user_id) >= amount
   end
 end
