@@ -44,9 +44,11 @@ defmodule Banking do
     |> compute_balance()
   end
 
-  defp compute_balance([{"credit", credit}, {"debit", debit}]) do
-    Money.new(credit - debit)
+  defp compute_balance(results) do
+    Enum.reduce(results, Money.new(0), fn
+      {"credit", amount}, total -> Money.add(total, amount)
+      {"debit", amount}, total -> Money.subtract(total, amount)
+      _, total -> total
+    end)
   end
-
-  defp compute_balance(_), do: Money.new(0)
 end
