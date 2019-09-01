@@ -13,6 +13,7 @@ defmodule Banking.Transaction do
     field :user_id, :integer
     field :amount, Money.Ecto.Amount.Type
     field :type, :string
+    field :description, :string
 
     timestamps()
   end
