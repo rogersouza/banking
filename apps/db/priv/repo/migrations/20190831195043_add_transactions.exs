@@ -1,4 +1,4 @@
-defmodule Banking.Repo.Migrations.AddTransactions do
+defmodule Db.Repo.Migrations.AddTransactions do
   use Ecto.Migration
 
   def change do

@@ -1,7 +1,7 @@
 defmodule Banking.Factory do
   @moduledoc false
 
-  use ExMachina.Ecto, repo: Banking.Repo
+  use ExMachina.Ecto, repo: Db.Repo
 
   def user_factory do
     %Auth.User{

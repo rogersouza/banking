@@ -4,6 +4,7 @@ defmodule BankingWeb.V1.UserControllerTest do
   import BankingWeb.Factory
 
   @create_user_url Routes.api_v1_user_path(BankingWeb.Endpoint, :create)
+  @initial_balance Application.get_env(:banking, :initial_balance) |> Money.new()
 
   describe "create/2" do
     test "creates a new user and returns 201", %{conn: conn} do
@@ -42,6 +43,14 @@ defmodule BankingWeb.V1.UserControllerTest do
       response = json_response(conn, 201)
 
       refute Map.has_key?(response, "password"), message: "the password hash is private and should not be returned"
+    end
+
+    test "gives @initial_amount to the user", %{conn: conn} do
+      user = build(:user)
+      conn = post(conn, @create_user_url, user)
+      %{"id" => user_id} = json_response(conn, 201)
+
+      assert Banking.balance(user_id) == @initial_balance
     end
   end
 end

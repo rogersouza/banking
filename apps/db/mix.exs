@@ -1,9 +1,9 @@
-defmodule Auth.MixProject do
+defmodule Db.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :auth,
+      app: :db,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
@@ -22,7 +22,7 @@ defmodule Auth.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Auth.Application, []},
+      mod: {Db.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -38,11 +38,7 @@ defmodule Auth.MixProject do
     [
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
-      {:jason, "~> 1.0"},
-      {:ex_machina, "~> 2.3", only: :test},
-      {:comeonin, "~> 3.2"},
-      {:guardian, "~> 1.2"},
-      {:db, in_umbrella: true}
+      {:jason, "~> 1.0"}
     ]
   end
 

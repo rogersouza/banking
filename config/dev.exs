@@ -1,16 +1,7 @@
 use Mix.Config
 
 # Configure your database
-config :auth, Auth.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "auth_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-
-# Configure your database
-config :banking, Banking.Repo,
+config :db, Db.Repo,
   username: "postgres",
   password: "postgres",
   database: "banking_dev",
@@ -66,7 +57,7 @@ config :phoenix, :plug_init_mode, :runtime
 config :phoenix, :stacktrace_depth, 20
 
 
-config :auth, Auth.Repo,
+config :auth, Db.Repo,
   username: "postgres",
   password: "postgres",
   database: "banking_dev",
@@ -74,7 +65,7 @@ config :auth, Auth.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 # Configure your database
-config :banking, Banking.Repo,
+config :banking, Db.Repo,
   username: "postgres",
   password: "postgres",
   database: "banking_dev",

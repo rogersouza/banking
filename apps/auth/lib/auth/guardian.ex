@@ -6,7 +6,7 @@ defmodule Auth.Guardian do
   """
   use Guardian, otp_app: :auth
 
-  def subject_for_token(%Auth.User{id: id}, claims) do
+  def subject_for_token(%Auth.User{id: id}, _claims) do
     sub = to_string(id)
     {:ok, sub}
   end
@@ -16,7 +16,7 @@ defmodule Auth.Guardian do
   end
 
   def resource_from_claims(%{"sub" => id}) do
-    resource = Auth.Repo.get(Auth.User, id)
+    resource = Db.Repo.get(Auth.User, id)
     {:ok, resource}
   end
 

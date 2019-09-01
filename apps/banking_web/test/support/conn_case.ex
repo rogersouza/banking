@@ -27,12 +27,10 @@ defmodule BankingWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Banking.Repo)
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Auth.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Db.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Banking.Repo, {:shared, self()})
-      Ecto.Adapters.SQL.Sandbox.mode(Auth.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Db.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

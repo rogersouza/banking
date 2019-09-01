@@ -10,15 +10,19 @@
 import Config
 
 # Configure Mix tasks and generators
+config :db,
+  ecto_repos: [Db.Repo]
+
+# Configure Mix tasks and generators
 config :auth,
-  ecto_repos: [Auth.Repo]
+  ecto_repos: [Db.Repo]
 
 # Configure Mix tasks and generators
 config :banking,
-  ecto_repos: [Banking.Repo]
+  ecto_repos: [Db.Repo]
 
 config :banking_web,
-  ecto_repos: [Banking.Repo],
+  ecto_repos: [Db.Repo],
   generators: [context_app: :banking]
 
 # Configures the endpoint
@@ -49,6 +53,9 @@ config :money,
   symbol: false,
   symbol_on_right: false,
   symbol_space: false
+
+config :banking,
+  initial_balance: 100000
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
