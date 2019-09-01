@@ -8,7 +8,7 @@ defmodule Banking do
 
   import Ecto.Query
 
-  alias Banking.Repo
+  alias Db.Repo
   alias Banking.Transaction
 
   @type amount() :: String.t() | Money.t()

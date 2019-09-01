@@ -5,10 +5,6 @@ defmodule BankingTest do
 
   @user_fixture build(:user)
 
-  setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Auth.Repo)
-  end
-
   defp debit(user_id, amount) do
     insert(:transaction,
       amount: amount,

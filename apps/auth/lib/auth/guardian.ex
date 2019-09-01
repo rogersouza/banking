@@ -16,7 +16,7 @@ defmodule Auth.Guardian do
   end
 
   def resource_from_claims(%{"sub" => id}) do
-    resource = Auth.Repo.get(Auth.User, id)
+    resource = Db.Repo.get(Auth.User, id)
     {:ok, resource}
   end
 

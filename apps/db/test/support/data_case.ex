@@ -1,4 +1,4 @@
-defmodule Auth.DataCase do
+defmodule Db.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -21,7 +21,7 @@ defmodule Auth.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Auth.DataCase
+      import Db.DataCase
     end
   end
 

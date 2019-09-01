@@ -10,15 +10,19 @@
 import Config
 
 # Configure Mix tasks and generators
+config :db,
+  ecto_repos: [Db.Repo]
+
+# Configure Mix tasks and generators
 config :auth,
-  ecto_repos: [Auth.Repo]
+  ecto_repos: [Db.Repo]
 
 # Configure Mix tasks and generators
 config :banking,
-  ecto_repos: [Banking.Repo]
+  ecto_repos: [Db.Repo]
 
 config :banking_web,
-  ecto_repos: [Banking.Repo],
+  ecto_repos: [Db.Repo],
   generators: [context_app: :banking]
 
 # Configures the endpoint

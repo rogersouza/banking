@@ -6,9 +6,7 @@ defmodule Auth.Application do
   use Application
 
   def start(_type, _args) do
-    children = [
-      Auth.Repo
-    ]
+    children = [Db.Repo]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: Auth.Supervisor)
   end
