@@ -42,6 +42,14 @@ config :auth, Auth.Guardian,
   issuer: "auth",
   secret_key: "Wbt2v7c7NEAKZ2PPHkzFJdX8HTi+JpOLE90Pvo2zFSlTe7ZmwV+j6IuAzP59Tp7A"
 
+config :money,
+  default_currency: :BRL,
+  separator: ".",
+  delimeter: ",",
+  symbol: false,
+  symbol_on_right: false,
+  symbol_space: false
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
