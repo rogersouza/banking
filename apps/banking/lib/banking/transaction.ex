@@ -6,9 +6,6 @@ defmodule Banking.Transaction do
   use Ecto.Schema
 
   import Ecto.Changeset
-  import Ecto.Query
-
-  alias __MODULE__
 
   @fields [:user_id, :amount, :type]
 
