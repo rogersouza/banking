@@ -1,4 +1,9 @@
 defmodule Auth do
+  @moduledoc """
+  Authentication conveniences
+
+  You can use register/1 to create new users and sign_in/1 to authenticate them
+  """
   alias Auth.{Repo, User, Encryption}
 
   import Ecto.Changeset
@@ -8,7 +13,7 @@ defmodule Auth do
 
   ## Example
   ```
-  user = %{"name" => "User Name", "email" => email}
+  user = %{"name" => "User Name", "email" => email, "password" => "pwd123"}
   {:ok, _new_user} = Auth.register(user)
   ```
   """

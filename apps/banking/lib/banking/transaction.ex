@@ -1,4 +1,8 @@
 defmodule Banking.Transaction do
+  @moduledoc """
+  An entry representing a debit or credit for a user
+  """
+
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -18,19 +22,5 @@ defmodule Banking.Transaction do
     transaction
     |> cast(params, @fields)
     |> validate_required(@fields)
-  end
-
-  def credits(user_id) do
-    from t in Transaction,
-      where:
-        t.user_id == ^user_id and
-          t.type == ^"credit"
-  end
-
-  def debits(user_id) do
-    from t in Transaction,
-      where:
-        t.user_id == ^user_id and
-          t.type == ^"credit"
   end
 end

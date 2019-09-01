@@ -1,4 +1,6 @@
 defmodule BankingWeb.Factory do
+  @moduledoc false
+  
   use ExMachina
   
   def user_factory do
