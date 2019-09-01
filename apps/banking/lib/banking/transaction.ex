@@ -1,4 +1,8 @@
 defmodule Banking.Transaction do
+  @moduledoc """
+  An entry representing a debit or credit for a user
+  """
+
   use Ecto.Schema
 
   import Ecto.Changeset

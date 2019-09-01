@@ -1,4 +1,6 @@
 defmodule Banking.Factory do
+  @moduledoc false
+
   use ExMachina.Ecto, repo: Banking.Repo
 
   def user_factory do
