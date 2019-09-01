@@ -13,7 +13,7 @@ defmodule Auth do
 
   ## Example
   ```
-  user = %{"name" => "User Name", "email" => email}
+  user = %{"name" => "User Name", "email" => email, "password" => "pwd123"}
   {:ok, _new_user} = Auth.register(user)
   ```
   """
