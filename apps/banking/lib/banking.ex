@@ -52,6 +52,33 @@ defmodule Banking do
     end)
   end
 
+  @doc """
+  Withdraws from the user's wallet
+
+  It creates a transaction of type debit with "withdraw" as the description.
+  Check Banking.Withdraw docs for further information
+
+  ## Usage
+
+  The happy case when the user has sufficient funds
+  ```elixir
+  # The user has $1000,00 in their wallet and tries to withdraw $500,00
+  iex> {:ok, withdraw} = Banking.withdraw(user_id, "500,00")
+  # Now, if you use Banking.balance/2 you can confirm that the wallet
+  # has only $500,00
+  ```
+
+  When the wallet's balance is insufficient
+  ```elixir
+  # The user has $1000,00 in their wallet and tries to withdraw $2000,00
+  iex> {:error, :insufficient_funds} = Banking.withdraw(user_id, "2000,00")
+  ```
+
+  Other than that, if the amount is invalid or the given user is inexistent, an
+  changeset containing the error will be returned
+  """
+  @spec withdraw(integer(), amount()) ::
+          {:ok, Withdraw.t()} | {:error, Ecto.Changeset.t()} | {:error, :insufficient_funds}
   def withdraw(user_id, amount) do
     attrs = %{amount: amount, user_id: user_id}
     changeset = Withdraw.changeset(%Withdraw{}, attrs)
