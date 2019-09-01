@@ -5,15 +5,21 @@ defmodule BankingWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api/v1", BankingWeb, as: :api_v1 do
-    pipe_through :api
-
-    resources("/users", V1.UserController, only: [:create])
+  pipeline :authenticated do
+    plug BankingWeb.V1.AuthenticationPlug
   end
 
   scope "/api/v1", BankingWeb, as: :api_v1 do
     pipe_through :api
-    
+
+    resources("/users", V1.UserController, only: [:create])
     post("/auth-token", V1.AuthController, :authenticate)
+  end
+
+  scope "/api/v1", BankingWeb, as: :api_v1 do
+    pipe_through :api
+    pipe_through :authenticated
+    
+    get("/wallet", V1.WalletController, :show)
   end
 end

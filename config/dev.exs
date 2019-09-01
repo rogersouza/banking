@@ -64,3 +64,18 @@ config :phoenix, :plug_init_mode, :runtime
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+
+config :auth, Auth.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "banking_dev",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
+
+# Configure your database
+config :banking, Banking.Repo,
+  username: "postgres",
+  password: "postgres",
+  database: "banking_dev",
+  hostname: "localhost"
