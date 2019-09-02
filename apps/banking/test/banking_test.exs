@@ -155,10 +155,7 @@ defmodule BankingTest do
       assert "is invalid" in errors_on(changeset).amount
     end
 
-    test "checks if the destination user exists", %{
-      source_user: source_user,
-      destination_user: destination_user
-    } do
+    test "checks if the destination user exists", %{source_user: source_user} do
       transfer_attrs = %{
         source_user_id: source_user.id,
         destination_user_id: 0,

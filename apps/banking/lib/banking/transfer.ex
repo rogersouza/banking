@@ -3,7 +3,7 @@ defmodule Banking.Transfer do
   A transfer entry.
 
   It holds all the information about transfers, from the transferee to the recipient.
-  
+
   """
 
   use Ecto.Schema
