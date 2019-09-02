@@ -22,5 +22,6 @@ defmodule BankingWeb.Router do
     
     get("/wallet", V1.WalletController, :show)
     resources("/withdrawals", V1.WithdrawController, only: [:create])
+    resources("/transfers", V1.TransferController, only: [:create])
   end
 end
