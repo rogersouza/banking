@@ -77,4 +77,110 @@ defmodule BankingTest do
       assert balance_before_withdraw == balance_after_withdraw
     end
   end
+
+  describe "transfer/2" do
+    setup do
+      {:ok, source_user} =
+        build(:user)
+        |> Db.Repo.insert()
+
+      {:ok, destination_user} =
+        build(:user)
+        |> Db.Repo.insert()
+
+      {:ok, _} = Banking.credit(source_user.id, @initial_balance)
+      {:ok, _} = Banking.credit(destination_user.id, @initial_balance)
+
+      %{source_user: source_user, destination_user: destination_user}
+    end
+
+    test "debits from source user's wallet", %{
+      source_user: source_user,
+      destination_user: destination_user
+    } do
+      transfer_attrs = %{
+        source_user_id: source_user.id,
+        destination_user_id: destination_user.id,
+        amount: @initial_balance
+      }
+
+      balance_before_transfer = Banking.balance(source_user.id)
+      {:ok, _transfer} = Banking.transfer(transfer_attrs)
+
+      expected_balance = Money.subtract(balance_before_transfer, @initial_balance)
+      assert Banking.balance(source_user.id) == expected_balance
+    end
+
+    test "credits on destination user's wallet", %{
+      source_user: source_user,
+      destination_user: destination_user
+    } do
+      transfer_attrs = %{
+        source_user_id: source_user.id,
+        destination_user_id: destination_user.id,
+        amount: @initial_balance
+      }
+
+      balance_before_transfer = Banking.balance(destination_user.id)
+      {:ok, _transfer} = Banking.transfer(transfer_attrs)
+
+      expected_balance = Money.add(balance_before_transfer, @initial_balance)
+      assert Banking.balance(destination_user.id) == expected_balance
+    end
+
+    test "doens't allow the transfer if the source user hasn't enough money", %{
+      source_user: source_user,
+      destination_user: destination_user
+    } do
+      transfer_attrs = %{
+        source_user_id: source_user.id,
+        destination_user_id: destination_user.id,
+        amount: @initial_balance.amount + 1000
+      }
+
+      assert {:error, :insufficient_funds} = Banking.transfer(transfer_attrs)
+    end
+
+    test "returns the changeset if the amount is invalid", %{
+      source_user: source_user,
+      destination_user: destination_user
+    } do
+      transfer_attrs = %{
+        source_user_id: source_user.id,
+        destination_user_id: destination_user.id,
+        amount: "invalid amount"
+      }
+
+      {:error, changeset} = Banking.transfer(transfer_attrs)
+      assert "is invalid" in errors_on(changeset).amount
+    end
+
+    test "checks if the destination user exists", %{
+      source_user: source_user,
+      destination_user: destination_user
+    } do
+      transfer_attrs = %{
+        source_user_id: source_user.id,
+        destination_user_id: 0,
+        amount: "100,00"
+      }
+
+      {:error, changeset} = Banking.transfer(transfer_attrs)
+      assert "doesn't exist" in errors_on(changeset).destination_user_id
+    end
+
+    test "the transferred amount should be positive", %{
+      source_user: source_user,
+      destination_user: destination_user
+    } do
+      transfer_attrs = %{
+        source_user_id: source_user.id,
+        destination_user_id: destination_user.id,
+        amount: "0,00"
+      }
+
+      {:error, changeset} = Banking.transfer(transfer_attrs)
+      assert "must be positive" in errors_on(changeset).amount
+    end
+  end
 end
