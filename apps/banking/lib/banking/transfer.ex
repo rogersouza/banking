@@ -23,16 +23,17 @@ defmodule Banking.Transfer do
     |> cast(params, @fields)
     |> validate_required(@fields)
     |> validate_destination_user_exist()
+    |> validate_source_and_destination_are_different()
     |> validate_amount_is_greater_or_equal_zero()
   end
 
   defp validate_destination_user_exist(changeset) do
     id = get_field(changeset, :destination_user_id)
 
-    if not Db.Repo.exists?(user(id)) do
-      add_error(changeset, :destination_user_id, "doesn't exist")
-    else
+    if Db.Repo.exists?(user(id)) do
       changeset
+    else
+      add_error(changeset, :destination_user_id, "doesn't exist")
     end
   end
 
@@ -51,4 +52,17 @@ defmodule Banking.Transfer do
       _invalid_changeset -> changeset
     end
   end
+
+  defp validate_source_and_destination_are_different(%{valid?: true} = changeset) do
+    destination_user_id = get_field(changeset, :destination_user_id)
+    source_user_id = get_field(changeset, :source_user_id)
+
+    if destination_user_id == source_user_id do
+      add_error(changeset, :destination_user_id, "can't be the same as the source user")
+    else
+      changeset
+    end
+  end
+  
+  defp validate_source_and_destination_are_different(changeset), do: changeset
 end

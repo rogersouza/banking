@@ -9,6 +9,18 @@ defmodule BankingWeb.V1.TransferController do
         conn
         |> put_status(:created)
         |> render("transfer.json", transfer)
+
+      {:error, :insufficient_funds} ->
+        conn
+        |> put_status(:bad_request)
+        |> put_view(BankingWeb.ErrorView)
+        |> render("insufficient_funds.json")
+
+      {:error, changeset} ->
+        conn
+        |> put_status(:bad_request)
+        |> put_view(BankingWeb.ErrorView)
+        |> render("400.json", changeset)
     end
   end
 end
