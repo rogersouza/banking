@@ -12,7 +12,7 @@ defmodule BankingWeb.ErrorView do
   def render("insufficient_funds.json", _) do
     %{errors: "insufficient funds"}
   end
-  
+
   def template_not_found(template, _assigns) do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end

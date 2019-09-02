@@ -3,6 +3,8 @@ defmodule BankingWeb.V1.AuthenticationPlugTest do
 
   import BankingWeb.Factory
 
+  alias BankingWeb.V1.AuthenticationPlug
+
   @user_fixture build(:user)
 
   setup do
@@ -18,7 +20,7 @@ defmodule BankingWeb.V1.AuthenticationPlugTest do
   end
 
   test "returns status 401 for requests without a token", %{conn: conn} do
-    conn = BankingWeb.V1.AuthenticationPlug.call(conn, %{})
+    conn = AuthenticationPlug.call(conn, %{})
     assert conn.status == 401
   end
 
@@ -26,7 +28,7 @@ defmodule BankingWeb.V1.AuthenticationPlugTest do
     conn =
       conn
       |> put_req_header("authorization", "Bearer #{token}")
-      |> BankingWeb.V1.AuthenticationPlug.call(%{})
+      |> AuthenticationPlug.call(%{})
 
     assert conn.assigns.user_id == user.id
   end

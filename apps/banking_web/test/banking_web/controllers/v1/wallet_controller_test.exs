@@ -16,7 +16,7 @@ defmodule BankingWeb.V1.WalletControllerTest do
 
     test "return user's balance", %{conn: conn} do
       conn = get(conn, @wallet_url)
-      
+
       assert json_response(conn, 200)
       response = json_response(conn, 200)
       assert Map.has_key?(response, "balance"), message: "the balance dit not return"

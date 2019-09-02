@@ -19,7 +19,7 @@ defmodule BankingWeb.Router do
   scope "/api/v1", BankingWeb, as: :api_v1 do
     pipe_through :api
     pipe_through :authenticated
-    
+
     get("/wallet", V1.WalletController, :show)
     resources("/withdrawals", V1.WithdrawController, only: [:create])
     resources("/transfers", V1.TransferController, only: [:create])

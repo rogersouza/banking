@@ -2,12 +2,12 @@ defmodule Banking.TransactionManager do
   @moduledoc """
   Holds all logic related to withdrawals and transfers
   """
-  
+
   import Ecto.Changeset
   import Banking.Transaction
-  
+
   alias Ecto.Multi
-  
+
   @doc """
   Builds an Ecto.Multi that holds all steps of a transfer process
   """
@@ -16,7 +16,7 @@ defmodule Banking.TransactionManager do
     transferred_amount = get_field(changeset, :amount)
     source_user_id = get_field(changeset, :source_user_id)
     destination_user_id = get_field(changeset, :destination_user_id)
-    
+
     debit = build_debit(source_user_id, transferred_amount)
     credit = build_credit(destination_user_id, transferred_amount)
 
@@ -37,7 +37,7 @@ defmodule Banking.TransactionManager do
       |> repo.insert()
     end)
   end
-  
+
   @doc """
   The balance must always be greater than zero, so this function should
   be called before trying to create a new withdraw or transfer
