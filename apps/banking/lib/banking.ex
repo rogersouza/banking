@@ -5,10 +5,10 @@ defmodule Banking do
   This module holds functions for withdraws, transfers and directly credit or debit
   of an especific user's wallet
   """
-  
+
   import Ecto.Query
   import Banking.TransactionManager, only: [has_sufficient_funds?: 2]
-  
+
   alias Banking.Transaction
   alias Banking.TransactionManager
   alias Banking.Transfer

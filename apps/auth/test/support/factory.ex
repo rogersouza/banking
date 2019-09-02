@@ -1,6 +1,6 @@
 defmodule Auth.Factory do
   @moduledoc false
-  
+
   use ExMachina.Ecto, repo: Db.Repo
 
   def user_factory do

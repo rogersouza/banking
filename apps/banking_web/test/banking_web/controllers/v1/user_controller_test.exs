@@ -1,6 +1,6 @@
 defmodule BankingWeb.V1.UserControllerTest do
   use BankingWeb.ConnCase
-  
+
   import BankingWeb.Factory
 
   @create_user_url Routes.api_v1_user_path(BankingWeb.Endpoint, :create)
@@ -10,7 +10,7 @@ defmodule BankingWeb.V1.UserControllerTest do
     test "creates a new user and returns 201", %{conn: conn} do
       user = build(:user)
       conn = post(conn, @create_user_url, user)
-      
+
       email = user.email
       name = user.name
 

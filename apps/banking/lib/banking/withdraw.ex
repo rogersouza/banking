@@ -6,10 +6,10 @@ defmodule Banking.Withdraw do
 
   type => "debit"
   description => "withdraw"
-  
+ 
   """
   @derive {Jason.Encoder, only: [:id, :user_id, :amount, :inserted_at]}
-  
+
   use Ecto.Schema
 
   import Ecto.Changeset
