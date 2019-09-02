@@ -7,6 +7,8 @@ defmodule Banking.Transaction do
 
   import Ecto.Changeset
 
+  alias __MODULE__
+
   @fields [:user_id, :amount, :type]
 
   schema "transactions" do
@@ -22,5 +24,23 @@ defmodule Banking.Transaction do
     transaction
     |> cast(params, @fields)
     |> validate_required(@fields)
+  end
+
+  def build_credit(user_id, %Money{} = amount, description \\ "transfer") do
+    %Transaction{
+      user_id: user_id,
+      amount: amount,
+      type: "credit",
+      description: description,
+    }
+  end
+
+  def build_debit(user_id, %Money{} = amount, description \\ "transfer") do
+    %Transaction{
+      user_id: user_id,
+      amount: amount,
+      type: "debit",
+      description: description,
+    }
   end
 end

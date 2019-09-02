@@ -7,9 +7,11 @@ defmodule Banking do
   """
 
   import Ecto.Query
+  import Banking.TransactionManager, only: [has_sufficient_funds?: 2]
 
   alias Db.Repo
-  alias Banking.{Transaction, Withdraw}
+  alias Banking.TransactionManager
+  alias Banking.{Transaction, Withdraw, Transfer}
 
   @type amount() :: String.t() | Money.t()
 
@@ -84,7 +86,7 @@ defmodule Banking do
     changeset = Withdraw.changeset(%Withdraw{}, attrs)
 
     with %{valid?: true} <- changeset,
-         true <- has_sufficient_funds?(user_id, changeset) do
+         true <- has_sufficient_funds?(user_id, changeset.changes.amount) do
       Repo.insert(changeset)
     else
       %{valid?: false} -> {:error, changeset}
@@ -92,7 +94,61 @@ defmodule Banking do
     end
   end
 
-  defp has_sufficient_funds?(user_id, %{changes: %{amount: amount}}) do
-    Banking.balance(user_id) >= amount
+  @doc """
+  A transfer has three steps:
+
+  1 - Debits from source
+  2 - Credit destination's wallet
+  3 - Creates a new transfer
+
+  ## Usage
+
+  When the source user has enough money
+  ```
+  transfer_attrs = %{
+    amount: Money.new(1000),
+    source_user_id: source_id,
+    destination_user_id: destination_id
+  }
+
+  {:ok, transfer} = Banking.transfer(transfer_attrs)
+  ```
+
+  When the source user hasn't enough money
+  ```
+  transfer_attrs = %{
+    amount: Money.new(1000),
+    source_user_id: source_id,
+    destination_user_id: destination_id
+  }
+
+  {:error, :insufficient_funds} = Banking.transfer(transfer_attrs)
+  ```
+
+  Problems related to data casting or not existing users will be returned within
+  the changeset
+  ```
+  {:error, changeset} = Banking.transfer(invalid_transfer_attrs)
+  ```
+
+  """
+  @spec transfer(map) :: {:ok, Transfer.t()} | {:error, Ecto.Changeset.t()}
+  def transfer(attrs) do
+    changeset = Transfer.changeset(%Transfer{}, attrs)
+
+    if changeset.valid? do
+      changeset
+      |> TransactionManager.transfer()
+      |> Repo.transaction
+      |> case do
+        {:ok, %{transfer: transfer}} ->
+          {:ok, transfer}
+
+        {:error, :has_sufficient_funds?, false, _} ->
+          {:error, :insufficient_funds}
+      end
+    else
+      {:error, changeset}
+    end
   end
 end
