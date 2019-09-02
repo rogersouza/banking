@@ -136,21 +136,15 @@ defmodule Banking do
   """
   @spec transfer(map) :: {:ok, Transfer.t()} | {:error, Ecto.Changeset.t()}
   def transfer(attrs) do
-    changeset = Transfer.changeset(%Transfer{}, attrs)
-
-    if changeset.valid? do
-      changeset
-      |> TransactionManager.transfer()
-      |> Repo.transaction()
-      |> case do
-        {:ok, %{transfer: transfer}} ->
-          {:ok, transfer}
-
-        {:error, :has_sufficient_funds?, false, _} ->
-          {:error, :insufficient_funds}
-      end
-    else
-      {:error, changeset}
+    case TransactionManager.transfer(attrs) do
+      {:error, :insufficient_funds} -> {:error, :insufficient_funds}
+      {:error, changeset} -> {:error, changeset}
+      multi -> do_transfer(multi)
     end
+  end
+
+  defp do_transfer(multi) do
+    {:ok, %{transfer: transfer}} = Repo.transaction(multi)
+    {:ok, transfer}
   end
 end
