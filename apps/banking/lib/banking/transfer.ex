@@ -1,4 +1,11 @@
 defmodule Banking.Transfer do
+  @moduledoc """
+  A transfer entry.
+
+  It holds all the information about transfers, from the transferee to the recipient.
+  
+  """
+
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -63,6 +70,6 @@ defmodule Banking.Transfer do
       changeset
     end
   end
-  
+
   defp validate_source_and_destination_are_different(changeset), do: changeset
 end
