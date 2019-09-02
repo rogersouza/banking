@@ -5,13 +5,15 @@ defmodule Banking do
   This module holds functions for withdraws, transfers and directly credit or debit
   of an especific user's wallet
   """
-
+  
   import Ecto.Query
   import Banking.TransactionManager, only: [has_sufficient_funds?: 2]
-
-  alias Db.Repo
+  
+  alias Banking.Transaction
   alias Banking.TransactionManager
-  alias Banking.{Transaction, Withdraw, Transfer}
+  alias Banking.Transfer
+  alias Banking.Withdraw
+  alias Db.Repo
 
   @type amount() :: String.t() | Money.t()
 
@@ -139,7 +141,7 @@ defmodule Banking do
     if changeset.valid? do
       changeset
       |> TransactionManager.transfer()
-      |> Repo.transaction
+      |> Repo.transaction()
       |> case do
         {:ok, %{transfer: transfer}} ->
           {:ok, transfer}
