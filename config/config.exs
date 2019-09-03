@@ -55,7 +55,7 @@ config :money,
   symbol_space: false
 
 config :banking,
-  initial_balance: 100000
+  initial_balance: 100_000
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
