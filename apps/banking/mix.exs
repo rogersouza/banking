@@ -41,7 +41,8 @@ defmodule Banking.MixProject do
       {:jason, "~> 1.0"},
       {:ex_machina, "~> 2.3", only: :test},
       {:money, "~> 1.4"},
-      {:auth, in_umbrella: true},
+      # Just so we can use %Auth.User{} in Banking.Factory
+      {:auth, in_umbrella: true, only: :test},
       {:db, in_umbrella: true}
     ]
   end
