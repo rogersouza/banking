@@ -24,4 +24,11 @@ defmodule BankingWeb.Router do
     resources("/withdrawals", V1.WithdrawController, only: [:create])
     resources("/transfers", V1.TransferController, only: [:create])
   end
+
+  scope "/api/backoffice/v1/", BankingWeb, as: :api_v1 do
+    pipe_through :api
+    pipe_through :authenticated
+
+    get("/reports", V1.ReportController, :show)
+  end
 end
