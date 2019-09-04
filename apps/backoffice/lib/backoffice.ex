@@ -71,6 +71,6 @@ defmodule Backoffice do
     |> Filter.date()
     |> Report.build()
     |> Repo.all()
-    |> Report.into_report_struct()
+    |> Report.mount()
   end
 end

@@ -8,64 +8,55 @@ defmodule Backoffice.Report do
 
   import Ecto.Query
 
+  @type t() :: %__MODULE__{}
+
+  @type day() :: integer()
+  @type month() :: integer()
+  @type year() :: integer()
+
+  @spec build({year(), month(), day()}) :: Ecto.Query.t()
+  @doc """
+  Builds the report query
+  """
   def build({year, month, day}) do
     from(t in "transactions")
-    |> year_filter(year)
-    |> month_filter(month)
-    |> day_filter(day)
+    |> filter("year", year)
+    |> filter("month", month)
+    |> filter("day", day)
     |> group_by([t], [t.type, t.description])
     |> select([t], {sum(t.amount), t.type, t.description})
   end
 
-  defp year_filter(query, nil), do: query
-
-  defp year_filter(query, year) do
-    where(query, [t], fragment("date_part('year', ?)", t.inserted_at) == ^year)
+  defp filter(query, field, value) do
+    if value == nil do
+      query
+    else
+      where(query, [t], fragment("date_part(?, ?)", ^field, t.inserted_at) == ^value)
+    end
   end
 
-  defp month_filter(query, nil), do: query
+  @spec mount(list(tuple())) :: t()
+  def mount(results) when results == [], do: %__MODULE__{}
 
-  defp month_filter(query, month) do
-    where(query, [t], fragment("date_part('month', ?)", t.inserted_at) == ^month)
-  end
-
-  defp day_filter(query, nil), do: query
-
-  defp day_filter(query, day) do
-    where(query, [t], fragment("date_part('day', ?)", t.inserted_at) == ^day)
-  end
-
-  def into_report_struct(results) when results == [], do: %__MODULE__{}
-
-  def into_report_struct(results) do
-    Enum.reduce(results, %__MODULE__{}, fn
-      {amount, "debit", "withdraw"}, report -> debit(report, amount)
-      {amount, "credit", "transfer"}, report -> credit_transfer(report, amount)
-      {amount, "credit", "initial_amount"}, report -> system_credit(report, amount)
+  def mount(results) do
+    results
+    |> Enum.reduce(%__MODULE__{}, fn
+      {amount, "debit", "withdraw"}, report -> add(report, amount, :withdrawals)
+      {amount, "credit", "transfer"}, report -> add(report, amount, :transfers)
+      {amount, "credit", "initial_amount"}, report -> add(report, amount, :system_credit)
       _, report -> report
     end)
     |> compute_total()
   end
 
-  defp debit(report, amount) do
+  defp add(report, amount, field) do
     amount = Money.new(amount)
-    %{report | withdrawals: Money.subtract(report.withdrawals, amount)}
-  end
-
-  defp credit_transfer(report, amount) do
-    amount = Money.new(amount)
-    %{report | transfers: Money.add(report.transfers, amount)}
-  end
-
-  defp system_credit(report, amount) do
-    amount = Money.new(amount)
-    %{report | system_credit: Money.add(report.system_credit, amount)}
+    Map.update(report, field, Money.new(0), fn v -> Money.add(amount, v) end)
   end
 
   defp compute_total(report) do
     [_ | values] = Map.values(report)
     total = Enum.reduce(values, 0, fn value, total -> total + value.amount end)
-
     %{report | total: Money.new(total)}
   end
 end
