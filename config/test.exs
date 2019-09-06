@@ -1,11 +1,12 @@
 use Mix.Config
 
+database_url =
+  System.get_env("DATABASE_URL") ||
+  "ecto://postgres:postgres@localhost/banking_dev"
+
 # Configure your database
 config :db, Db.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "banking_test",
-  hostname: "localhost",
+  url: database_url,
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

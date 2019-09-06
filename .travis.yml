@@ -1,11 +1,25 @@
 language: elixir
 elixir:
-  - 1.9
+  - '1.9.1'
+otp_release:
+  - '18.2.1'
+
+
 env:
   - MIX_ENV=test
 
 services:
   - postgresql
+  - docker
+
+before_install:
+  - docker build . --build-arg mix_env=test -t banking --target=build
 
 script:
-  - mix do deps.get, compile --warnings-as-errors, test
+  - docker run --net=host banking mix test
+
+deploy:
+  provider: script
+  script: bash heroku_docker_deploy
+  on:
+    branch: master

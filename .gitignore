@@ -22,3 +22,6 @@ erl_crash.dump
 /.elixir_ls/
 
 .env
+
+erlang-20.0-nonroot.tar.bz2
+v1.9.1-otp-20.zip
