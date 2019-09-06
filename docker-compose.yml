@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  web:
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    build:
+      context: .
+      target: build
+      args:
+        mix_env: dev
+    volumes:
+      - .:/app
+    env_file:
+      .env
+    command: ./run.sh
+  db:
+    image: "postgres:9.6.3"

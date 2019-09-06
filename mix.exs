@@ -3,9 +3,23 @@ defmodule Banking.Umbrella.MixProject do
 
   def project do
     [
+      version: "0.0.1",
       apps_path: "apps",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      releases: releases()
+    ]
+  end
+
+  defp releases do
+    [
+      api: [
+        include_erts: true,
+        include_executables_for: [:unix],
+        applications: [
+          banking_web: :permanent
+        ]
+      ]
     ]
   end
 

@@ -36,7 +36,7 @@ defmodule Db.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.1.6"},
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.0"}
     ]
