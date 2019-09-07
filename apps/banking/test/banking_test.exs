@@ -76,6 +76,13 @@ defmodule BankingTest do
 
       assert balance_before_withdraw == balance_after_withdraw
     end
+
+    test "doesn't allow not positive amounts", %{user: user} do
+      amount = Money.new(-1000)
+      {:error, changeset} = Banking.withdraw(user.id, amount)
+      
+      assert "must be positive" in errors_on(changeset).amount
+    end
   end
 
   describe "transfer/2" do
