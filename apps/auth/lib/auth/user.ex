@@ -41,8 +41,9 @@ defmodule Auth.User do
     |> validate_format(:email, ~r/@/)
   end
 
-  defp hash_password(%{changes: %{password: password}} = changeset) do
+  defp hash_password(changeset) do
     if changeset.valid? do
+      password = get_field(changeset, :password)
       put_change(changeset, :password, Encryption.put_hash(password))
     else
       changeset
