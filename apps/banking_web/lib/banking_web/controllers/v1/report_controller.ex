@@ -13,6 +13,11 @@ defmodule BankingWeb.V1.ReportController do
         |> put_status(:not_found)
         |> put_view(BankingWeb.ErrorView)
         |> render("404.json")
+
+      {:error, changeset} ->
+        conn
+        |> put_status(:not_found)
+        |> render("404.json", changeset)
     end
   end
 end

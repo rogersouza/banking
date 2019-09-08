@@ -32,5 +32,13 @@ defmodule BankingWeb.V1.ReportControllerTest do
       conn = get(conn, report_url)
       assert json_response(conn, 200)
     end
+
+    test "returns 400 for invalid date", %{conn: conn} do
+      filters = [year: 2019, month: 13, day: 1]
+      report_url = Routes.api_v1_report_path(conn, :show, filters)
+
+      conn = get(conn, report_url)
+      assert json_response(conn, 404)
+    end
   end
 end
