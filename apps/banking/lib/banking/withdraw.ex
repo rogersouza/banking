@@ -6,7 +6,7 @@ defmodule Banking.Withdraw do
 
   type => "debit"
   description => "withdraw"
- 
+
   """
   @derive {Jason.Encoder, only: [:id, :user_id, :amount, :inserted_at]}
 
@@ -29,5 +29,6 @@ defmodule Banking.Withdraw do
     withdraw
     |> cast(params, @fields)
     |> validate_required(@fields)
+    |> check_constraint(:amount, name: :amount_cannot_be_negative, message: "must be positive")
   end
 end
