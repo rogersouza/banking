@@ -20,7 +20,7 @@ defmodule Banking.Transfer do
   schema "transfers" do
     field :source_user_id, :integer
     field :destination_user_id, :integer
-    field :amount, Money.Ecto.Amount.Type, virtual: true
+    field :amount, Banking.Money.Type, virtual: true
     field :debit_id, :integer
     field :credit_id, :integer
   end

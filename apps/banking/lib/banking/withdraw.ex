@@ -18,7 +18,7 @@ defmodule Banking.Withdraw do
 
   schema "transactions" do
     field :user_id, :integer
-    field :amount, Money.Ecto.Amount.Type
+    field :amount, Banking.Money.Type
     field :type, :string, default: "debit"
     field :description, :string, default: "withdraw"
 
