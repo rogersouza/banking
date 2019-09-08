@@ -10,6 +10,10 @@ defmodule BankingWeb.V1.ReportView do
     }
   end
 
+  def render("404.json", changeset) do
+    BankingWeb.ErrorView.render("400.json", changeset)
+  end
+
   defp money(m) do
     Money.to_string(m, symbol: true)
   end
