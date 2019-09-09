@@ -7,6 +7,7 @@ until psql -h db -U "postgres" -c '\q' 2>/dev/null; do
   sleep 1
 done
 
+mix deps.get
 mix ecto.create
 mix ecto.migrate
 mix phx.server

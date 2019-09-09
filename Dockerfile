@@ -18,7 +18,8 @@ COPY . /app
 
 WORKDIR /app
 
-RUN mix do deps.get, deps.compile
+RUN mix deps.get
+RUN mix deps.compile
 
 # Only runs mix release if in production mode
 RUN if [ "$MIX_ENV" == "prod" ]; then \
