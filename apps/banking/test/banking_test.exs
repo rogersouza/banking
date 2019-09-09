@@ -80,7 +80,7 @@ defmodule BankingTest do
     test "doesn't allow negative amounts", %{user: user} do
       negative_amount = Money.new(-1000)
       {:error, changeset} = Banking.withdraw(user.id, negative_amount)
-      
+
       assert "must be positive" in errors_on(changeset).amount
     end
   end
