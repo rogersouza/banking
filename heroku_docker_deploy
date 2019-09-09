@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin registry.heroku.com
 
-docker build . -t registry.heroku.com/gentle-retreat-35139/web --no-cache
-docker push registry.heroku.com/gentle-retreat-35139/web
+docker build . -t registry.heroku.com/$HEROKU_APP_NAME/web --no-cache
+docker push registry.heroku.com/$HEROKU_APP_NAME/web
+heroku container:release web --app $HEROKU_APP_NAME
